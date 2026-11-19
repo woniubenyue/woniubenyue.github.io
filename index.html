@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>蜗牛奔月 · 免费工具箱</title>
+<meta name="description" content="蜗牛奔月免费工具箱：二维码生成、单位换算、日期计算、随机密码、人民币大写、个税估算，全部本地运行，不上传数据。">
+<style>
+:root{
+--bg:#f6f4ef; --card:#ffffff; --ink:#22252a; --sub:#6b7280;
+--brand:#e4572e; --brand-soft:#fdeee8; --line:#e8e2d8;
+--ok:#1a7f4b; --radius:16px;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink);
+font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+font-size:16px; line-height:1.55;}
+.wrap{max-width:720px; margin:0 auto; padding:0 14px 40px;}
+header{padding:30px 6px 8px; text-align:center;}
+header.logo{font-size:44px; line-height:1;}
+header h1{margin:8px 0 2px; font-size:25px; letter-spacing:1px;}
+header h1.accent{color:var(--brand);}
+header p{margin:0; color:var(--sub); font-size:14px;}
+nav.toc{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; padding:16px 0 4px;}
+nav.toc a{color:var(--ink); text-decoration:none; background:var(--card);
+border:1px solid var(--line); border-radius:999px; padding:7px 14px; font-size:14px;}
+nav.toc a:active{background:var(--brand-soft);}
+section.card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+padding:18px 16px 16px; margin-top:16px; box-shadow:0 1px 3px rgba(60,40,20,.05);}
+section.card h2{margin:0 0 4px; font-size:19px;}
+section.card h2.ico{margin-right:6px;}
+section.card.desc{margin:0 0 12px; color:var(--sub); font-size:13.5px;}
+label.flabel{display:block; font-size:13.5px; color:var(--sub); margin:10px 0 4px;}
+input[type=text],input[type=number],input[type=date],select,textarea{
+width:100%; padding:11px 12px; font-size:16px; color:var(--ink);
+border:1.5px solid var(--line); border-radius:10px; background:#fff; outline:none;}
+input:focus,select:focus,textarea:focus{border-color:var(--brand);}
+textarea{resize:vertical; min-height:56px;}
+.row{display:flex; gap:10px;}
+.row > *{flex:1; min-width:0;}
+.btns{display:flex; gap:10px; margin-top:14px;}
+button{cursor:pointer; border:none; border-radius:10px; font-size:15.5px; padding:11px 16px;}
+button.primary{background:var(--brand); color:#fff; flex:1; font-weight:600;}
+button.ghost{background:#fff; color:var(--ink); border:1.5px solid var(--line); padding:11px 14px;}
+button:active{opacity:.82;}
+.out{margin-top:14px; background:#fbf9f5; border:1.5px dashed var(--line); border-radius:10px;
+padding:12px; font-size:17px; word-break:break-all; min-height:50px; white-space:pre-wrap;}
+.out:empty{display:none;}
+.out.big{font-size:21px; font-weight:700;}
+.out.note{display:block; margin-top:6px; font-size:13px; color:var(--sub); font-weight:400;}
+.err{color:#c0392b; font-size:14.5px;}
+canvas#qrCanvas{display:block; margin:14px auto 2px; max-width:78vw; height:auto; background:#fff;}
+.checks{display:flex; flex-wrap:wrap; gap:8px 16px; margin-top:10px; font-size:15px;}
+.checks label{display:flex; align-items:center; gap:5px;}
+.checks input{width:18px; height:18px; accent-color:var(--brand);}
+input[type=range]{width:100%; accent-color:var(--brand);}
+.secttl{margin:30px 4px 2px; font-size:20px;}
+.secttl + p{margin:0 4px; color:var(--sub); font-size:13.5px;}
+.res-grid{display:grid; grid-template-columns:1fr; gap:12px; margin-top:14px;}
+@media(min-width:560px){.res-grid{grid-template-columns:1fr 1fr 1fr;}}
+.res-card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+padding:18px 14px; text-align:center;}
+.res-card.rico{font-size:34px;}
+.res-card h3{margin:8px 0 4px; font-size:17px;}
+.res-card p{margin:0 0 12px; color:var(--sub); font-size:13.5px; min-height:40px;}
+.res-card a{display:inline-block; background:var(--brand); color:#fff; text-decoration:none;
+border-radius:10px; padding:10px 22px; font-size:15px; font-weight:600;}
+.gzh-card{margin-top:12px; background:linear-gradient(135deg,#fdf3ec,#fdeee8);
+border:1px solid #f3d5c6; border-radius:var(--radius); padding:20px 16px; text-align:center;}
+.gzh-card.gname{font-size:20px; font-weight:700;}
+.gzh-card p{margin:6px 0 0; color:#7a5a4a; font-size:14px;}
+footer{margin-top:34px; text-align:center; color:var(--sub); font-size:13px; line-height:1.9;}
+.toast{position:fixed; left:50%; bottom:34px; transform:translateX(-50%) translateY(20px);
+background:rgba(30,30,30,.92); color:#fff; padding:10px 20px; border-radius:999px;
+font-size:14.5px; opacity:0; pointer-events:none; transition:.25s;}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+<div class="logo">🐌</div>
+<h1>蜗牛奔月 · <span class="accent">免费工具箱</span></h1>
+<p>日常小工具，打开就能用 · 全部在手机本地运行</p>
+</header>
+
+<nav class="toc">
+<a href="#tool-qr">二维码</a>
+<a href="#tool-unit">单位换算</a>
+<a href="#tool-date">日期计算</a>
+<a href="#tool-pwd">随机密码</a>
+<a href="#tool-rmb">人民币大写</a>
+<a href="#tool-tax">个税估算</a>
+<a href="#resources">免费资源</a>
+</nav>
+
+<!-- ============ 工具 1：二维码生成 ============ -->
+<section class="card" id="tool-qr">
+<h2><span class="ico">🔳</span>二维码生成</h2>
+<p class="desc">输入文字或网址，生成二维码，可保存图片发给别人。</p>
+<label class="flabel" for="qrText">内容（网址、文字都可以）</label>
+<textarea id="qrText" placeholder="例如：https://wnby.rf.gd/"></textarea>
+<canvas id="qrCanvas" width="264" height="264" style="display:none"></canvas>
+<div class="out" id="qrMsg"></div>
+<div class="btns">
+<button class="primary" id="qrGen">生成二维码</button>
+<button class="ghost" id="qrSave">保存图片</button>
+<button class="ghost" id="qrClear">清空</button>
+</div>
+</section>
+
+<!-- ============ 工具 2：单位换算 ============ -->
+<section class="card" id="tool-unit">
+<h2><span class="ico">🔄</span>单位换算</h2>
+<p class="desc">长度、面积、重量、温度，常用单位互相换算。</p>
+<label class="flabel" for="unitCat">类别</label>
+<select id="unitCat"></select>
+<label class="flabel" for="unitVal">数值</label>
+<input type="number" id="unitVal" inputmode="decimal" placeholder="输入要换算的数值">
+<div class="row" style="margin-top:10px;">
+<div>
+<label class="flabel" for="unitFrom" style="margin-top:0;">从</label>
+<select id="unitFrom"></select>
+</div>
+<div>
+<label class="flabel" for="unitTo" style="margin-top:0;">换到</label>
+<select id="unitTo"></select>
+</div>
+</div>
+<div class="out" id="unitOut"></div>
+<div class="btns">
+<button class="primary" id="unitGo">换算</button>
+<button class="ghost" id="unitCopy">复制结果</button>
+<button class="ghost" id="unitClear">清空</button>
+</div>
+</section>
+
+<!-- ============ 工具 3：日期计算 ============ -->
+<section class="card" id="tool-date">
+<h2><span class="ico">📅</span>日期计算</h2>
+<p class="desc">算两个日期相差多少天，或者某天往后（往前）数 N 天是哪天。</p>
+<div class="row">
+<div>
+<label class="flabel" for="dateA" style="margin-top:0;">开始日期</label>
+<input type="date" id="dateA">
+</div>
+<div>
+<label class="flabel" for="dateB" style="margin-top:0;">结束日期</label>
+<input type="date" id="dateB">
+</div>
+</div>
+<div class="out" id="dateDiffOut"></div>
+<div class="btns">
+<button class="primary" id="dateDiffGo">算相差天数</button>
+<button class="ghost" id="dateDiffCopy">复制结果</button>
+</div>
+<label class="flabel" for="dateAddN" style="margin-top:18px;">从开始日期往后数（负数 = 往前数）</label>
+<div class="row">
+<input type="number" id="dateAddN" inputmode="numeric" placeholder="天数，如 100">
+<button class="primary" id="dateAddGo" style="flex:0 0 auto;">算日期</button>
+</div>
+<div class="out" id="dateAddOut"></div>
+<div class="btns">
+<button class="ghost" id="dateAddCopy">复制结果</button>
+<button class="ghost" id="dateClear">清空</button>
+</div>
+</section>
+
+<!-- ============ 工具 4：随机密码 ============ -->
+<section class="card" id="tool-pwd">
+<h2><span class="ico">🔐</span>随机密码生成</h2>
+<p class="desc">给新账号现生成一个不好猜的密码，长度和字符种类都能选。</p>
+<label class="flabel" for="pwdLen">长度：<span id="pwdLenVal">12</span> 位</label>
+<input type="range" id="pwdLen" min="4" max="64" value="12">
+<div class="checks">
+<label><input type="checkbox" id="pwdLower" checked>小写字母</label>
+<label><input type="checkbox" id="pwdUpper" checked>大写字母</label>
+<label><input type="checkbox" id="pwdDigit" checked>数字</label>
+<label><input type="checkbox" id="pwdSymbol">符号</label>
+<label><input type="checkbox" id="pwdClean" checked>去掉易混字符（0/O、1/l）</label>
+</div>
+<div class="out" id="pwdOut" style="font-family:ui-monospace,Menlo,Consolas,monospace;"></div>
+<div class="btns">
+<button class="primary" id="pwdGen">生成密码</button>
+<button class="ghost" id="pwdCopy">复制</button>
+<button class="ghost" id="pwdClear">清空</button>
+</div>
+</section>
+
+<!-- ============ 工具 5：人民币大写 ============ -->
+<section class="card" id="tool-rmb">
+<h2><span class="ico">🧾</span>人民币大写</h2>
+<p class="desc">填合同、写借条、报销时，把数字金额换成规范大写。</p>
+<label class="flabel" for="rmbVal">金额（元）</label>
+<input type="text" id="rmbVal" inputmode="decimal" placeholder="例如：1001.05">
+<div class="out" id="rmbOut"></div>
+<div class="btns">
+<button class="primary" id="rmbGo">转换</button>
+<button class="ghost" id="rmbCopy">复制结果</button>
+<button class="ghost" id="rmbClear">清空</button>
+</div>
+</section>
+
+<!-- ============ 工具 6：个税估算 ============ -->
+<section class="card" id="tool-tax">
+<h2><span class="ico">💰</span>个税估算</h2>
+<p class="desc">按全年收入估算工资薪金个人所得税（累计预扣口径，减除费用 6 万元/年）。</p>
+<label class="flabel" for="taxGross">全年税前收入（元）</label>
+<input type="number" id="taxGross" inputmode="decimal" placeholder="例如：200000">
+<label class="flabel" for="taxSocial">全年社保公积金个人部分（元，没有填 0）</label>
+<input type="number" id="taxSocial" inputmode="decimal" placeholder="例如：20000">
+<label class="flabel" for="taxSpecial">全年专项附加扣除（元：子女教育、房贷利息、赡养老人等）</label>
+<input type="number" id="taxSpecial" inputmode="decimal" placeholder="例如：24000">
+<div class="out" id="taxOut"></div>
+<div class="btns">
+<button class="primary" id="taxGo">估算</button>
+<button class="ghost" id="taxCopy">复制结果</button>
+<button class="ghost" id="taxClear">清空</button>
+</div>
+<p class="desc" style="margin-top:10px;">结果仅供参考，以实际为准；实际税额以单位代扣代缴和年度汇算清缴为准。</p>
+</section>
+
+<!-- ============ 变现区：免费资源领取 ============ -->
+<h2 class="secttl" id="resources">🎁 免费资源领取</h2>
+<p>软件、教程、实用资源都在资源站里，点开就能领。</p>
+<div class="res-grid">
+<div class="res-card">
+<div class="rico">☁️</div>
+<h3>夸克网盘资源</h3>
+<p>常用软件和教程资源，存在夸克网盘，点开资源站领取。</p>
+<a data-link="quark" href="#" target="_blank" rel="noopener">点开资源站领取</a>
+</div>
+<div class="res-card">
+<div class="rico">📦</div>
+<h3>UC 网盘资源</h3>
+<p>另一批资源存在 UC 网盘，点开资源站领取。</p>
+<a data-link="uc" href="#" target="_blank" rel="noopener">点开资源站领取</a>
+</div>
+<div class="res-card">
+<div class="rico">🗂️</div>
+<h3>百度网盘资源</h3>
+<p>还有些资源在百度网盘，点开资源站领取。</p>
+<a data-link="baidu" href="#" target="_blank" rel="noopener">点开资源站领取</a>
+</div>
+</div>
+
+<div class="gzh-card">
+<div class="gname">公众号「蜗牛奔月」</div>
+<p>新资源、新工具先在公众号发布。<br>打开微信 → 搜索公众号「蜗牛奔月」→ 关注，就不会错过。</p>
+</div>
+
+<footer>
+蜗牛奔月 · 免费工具箱<br>
+本站工具全部本地运行，不上传数据。
+</footer>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================================================================
+以后换拉新链接，只改这里！
+- quark / uc / baidu：拿到各网盘的拉新（推广）链接后，
+把下面对应的网址换掉即可，页面上三张资源卡会自动用新链接。
+- 现在三者都先指向资源站首页 https://wnby.rf.gd/ 。
+- resourceSite：资源站地址（暂时也是三张卡的落地页）。
+- gzhName：公众号名称，只用于页面显示。
+================================================================ */
+var CONFIG = {
+resourceSite: 'https://wnby.rf.gd/',
+quark: 'https://wnby.rf.gd/', // ← 以后换成夸克网盘拉新链接
+uc: 'https://wnby.rf.gd/', // ← 以后换成 UC 网盘拉新链接
+baidu: 'https://wnby.rf.gd/', // ← 以后换成百度网盘拉新链接
+gzhName: '蜗牛奔月'
+};
+</script>
+<script>
+'use strict';
+/* ================= 通用小工具 ================= */
+function $(id){ return document.getElementById(id);}
+var toastTimer = null;
+function toast(msg){
+var t = $('toast'); t.textContent = msg; t.className = 'toast show';
+clearTimeout(toastTimer);
+toastTimer = setTimeout(function(){ t.className = 'toast';}, 1800);
+}
+function copyText(text, okMsg){
+if(!text){ toast('还没有结果可复制'); return;}
+function done(){ toast(okMsg || '已复制');}
+if(navigator.clipboard && navigator.clipboard.writeText){
+navigator.clipboard.writeText(text).then(done, function(){ fallback();});
+} else fallback();
+function fallback(){
+var ta = document.createElement('textarea');
+ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+document.body.appendChild(ta); ta.select();
+try { document.execCommand('copy'); done();}
+catch(e){ toast('复制失败，请长按手动复制');}
+document.body.removeChild(ta);
+}
+}
+function fmtNum(n){
+if(n === null || n === undefined || isNaN(n)) return '';
+var r = Math.round(n * 1e10) / 1e10;
+return String(r);
+}
+function money(n){ return '¥' + (Math.round(n * 100) / 100).toLocaleString('zh-CN', {minimumFractionDigits: 2, maximumFractionDigits: 2});}
+</script>
+
+<script>
+/* ===== 二维码生成核心：复用自小程序 utils/qrcode.js（纯本地实现，纠错等级 M，版本 1–10） ===== */
+var createQR = (function(){
+// utils/qrcode.js — 纯本地 QR 码生成（无网络、无第三方库）
+// 实现范围：byte mode（模式 0100）、纠错等级 M、版本 1–10 自动选版、
+// 8 种掩码自动择优（按 QR 规范四项罚分）、格式信息与版本信息 BCH 编码。
+// 导出：
+//   createQR(text) -> { version, size, modules: 二维数组(1=黑,0=白,不含静区) }
+//   drawQR(canvasId, component, text, px) 在小程序 canvas 上绘制（带 4 模块静区）
+//   utf8Bytes(text) -> 字节数组；byteLength(text)
+// 数据容量（EC M, byte mode）：V1=14 ... V9=180, V10=213 字节。
+
+
+// ---------- GF(2^8) 表（本原多项式 0x11d） ----------
+var EXP = new Array(256);
+var LOG = new Array(256);
+(function () {
+  var x = 1;
+  for (var i = 0; i < 255; i++) {
+    EXP[i] = x; LOG[x] = i;
+    x <<= 1;
+    if (x & 0x100) x ^= 0x11d;
+  }
+  for (var i = 255; i < 512; i++) EXP[i] = EXP[i - 255]; // gfMul 指数和最大 508，表须填满
+})();
+function gfMul(a, b) { return (a === 0 || b === 0) ? 0 : EXP[LOG[a] + LOG[b]]; }
+
+// RS 生成多项式：degree = ecLen
+function rsGenPoly(ecLen) {
+  var poly = [1];
+  for (var i = 0; i < ecLen; i++) {
+    var next = new Array(poly.length + 1);
+    for (var j = 0; j < next.length; j++) next[j] = 0;
+    for (var k = 0; k < poly.length; k++) {
+      next[k] ^= gfMul(poly[k], EXP[i]);       // * α^i
+      next[k + 1] ^= poly[k];                  // * x
+    }
+    poly = next;
+  }
+  return poly; // 最高次在前
+}
+function rsEncode(data, ecLen) {
+  var gen = rsGenPoly(ecLen);
+  var res = new Array(ecLen);
+  for (var i = 0; i < ecLen; i++) res[i] = 0;
+  for (var d = 0; d < data.length; d++) {
+    var factor = data[d] ^ res[0];
+    res.shift(); res.push(0);
+    if (factor !== 0) {
+      // gen 为升幂系数（gen[ecLen]=1 为最高次）；移位寄存器需按降幂取 gen[ecLen-1-j]
+      for (var j = 0; j < ecLen; j++) res[j] ^= gfMul(gen[ecLen - 1 - j], factor);
+    }
+  }
+  return res;
+}
+
+// ---------- 版本参数（EC 等级 M） ----------
+// total: 总码字; ecPerBlock: 每块纠错字; groups: [块数, 每块数据字]（可两组）
+var VERSIONS = [
+  null,
+  { total: 26,  ec: 10, groups: [[1, 16]] },
+  { total: 44,  ec: 16, groups: [[1, 28]] },
+  { total: 70,  ec: 26, groups: [[1, 44]] },
+  { total: 100, ec: 18, groups: [[2, 32]] },
+  { total: 134, ec: 24, groups: [[2, 43]] },
+  { total: 172, ec: 16, groups: [[4, 27]] },
+  { total: 196, ec: 18, groups: [[4, 31]] },
+  { total: 242, ec: 22, groups: [[2, 38], [2, 39]] },
+  { total: 292, ec: 22, groups: [[3, 36], [2, 37]] },
+  { total: 346, ec: 26, groups: [[4, 43], [1, 44]] }
+];
+var ALIGN = [
+  null, [], [6, 18], [6, 22], [6, 26], [6, 30], [6, 34],
+  [6, 22, 38], [6, 24, 42], [6, 26, 46], [6, 28, 50]
+];
+function dataCapacity(version) {
+  var v = VERSIONS[version], sum = 0;
+  v.groups.forEach(function (g) { sum += g[0] * g[1]; });
+  return sum;
+}
+
+// ---------- UTF-8 ----------
+function utf8Bytes(str) {
+  var out = [];
+  for (var i = 0; i < str.length; i++) {
+    var c = str.charCodeAt(i);
+    if (c < 0x80) out.push(c);
+    else if (c < 0x800) out.push(0xC0 | (c >> 6), 0x80 | (c & 0x3F));
+    else if (c >= 0xD800 && c <= 0xDBFF && i + 1 < str.length) {
+      var cp = 0x10000 + ((c - 0xD800) << 10) + (str.charCodeAt(++i) - 0xDC00);
+      out.push(0xF0 | (cp >> 18), 0x80 | ((cp >> 12) & 0x3F), 0x80 | ((cp >> 6) & 0x3F), 0x80 | (cp & 0x3F));
+    } else out.push(0xE0 | (c >> 12), 0x80 | ((c >> 6) & 0x3F), 0x80 | (c & 0x3F));
+  }
+  return out;
+}
+
+// ---------- 位流 ----------
+function BitBuffer() { this.buffer = []; this.length = 0; }
+BitBuffer.prototype.put = function (num, len) {
+  for (var i = 0; i < len; i++) this.putBit(((num >>> (len - i - 1)) & 1) === 1);
+};
+BitBuffer.prototype.putBit = function (bit) {
+  var idx = Math.floor(this.length / 8);
+  if (this.buffer.length <= idx) this.buffer.push(0);
+  if (bit) this.buffer[idx] |= (0x80 >>> (this.length % 8));
+  this.length++;
+};
+
+function buildDataCodewords(bytes, version) {
+  var bb = new BitBuffer();
+  bb.put(0x4, 4);                              // byte mode
+  bb.put(bytes.length, version >= 10 ? 16 : 8);
+  for (var i = 0; i < bytes.length; i++) bb.put(bytes[i], 8);
+  var capBits = dataCapacity(version) * 8;
+  var term = Math.min(4, capBits - bb.length);
+  bb.put(0, term);
+  while (bb.length % 8 !== 0) bb.putBit(false);
+  var pads = [0xEC, 0x11], p = 0;
+  while (bb.buffer.length < dataCapacity(version)) bb.put(pads[p++ % 2], 8);
+  return bb.buffer;
+}
+
+function interleave(dataCw, version) {
+  var v = VERSIONS[version];
+  var blocks = [], offset = 0;
+  v.groups.forEach(function (g) {
+    for (var i = 0; i < g[0]; i++) {
+      var d = dataCw.slice(offset, offset + g[1]); offset += g[1];
+      blocks.push({ data: d, ec: rsEncode(d, v.ec) });
+    }
+  });
+  var out = [], maxD = 0, maxE = 0, i, b;
+  blocks.forEach(function (bl) { maxD = Math.max(maxD, bl.data.length); maxE = Math.max(maxE, bl.ec.length); });
+  for (i = 0; i < maxD; i++) for (b = 0; b < blocks.length; b++) if (i < blocks[b].data.length) out.push(blocks[b].data[i]);
+  for (i = 0; i < maxE; i++) for (b = 0; b < blocks.length; b++) if (i < blocks[b].ec.length) out.push(blocks[b].ec[i]);
+  return out;
+}
+
+// ---------- BCH ----------
+function bchDigit(data) { var d = 0; while (data !== 0) { d++; data >>>= 1; } return d; }
+function bchTypeInfo(data) {
+  var d = data << 10;
+  var g = 0x537;
+  while (bchDigit(d) - bchDigit(g) >= 0) d ^= (g << (bchDigit(d) - bchDigit(g)));
+  return ((data << 10) | d) ^ 0x5412;
+}
+function bchTypeNumber(data) {
+  var d = data << 12;
+  var g = 0x1F25;
+  while (bchDigit(d) - bchDigit(g) >= 0) d ^= (g << (bchDigit(d) - bchDigit(g)));
+  return (data << 12) | d;
+}
+
+// ---------- 矩阵构造 ----------
+function baseMatrix(version) {
+  var size = version * 4 + 17;
+  var m = [], r = [], x, y;
+  for (y = 0; y < size; y++) { m.push(new Array(size).fill(null)); r.push(new Array(size).fill(false)); }
+  function set(x, y, val, reserve) {
+    if (x >= 0 && x < size && y >= 0 && y < size) { m[y][x] = val; if (reserve) r[y][x] = true; }
+  }
+  function finder(cx, cy) { // cx,cy 为 7x7 左上角
+    for (var dy = -1; dy <= 7; dy++) for (var dx = -1; dx <= 7; dx++) {
+      var px = cx + dx, py = cy + dy;
+      if (px < 0 || px >= size || py < 0 || py >= size) continue;
+      var v = (dx >= 0 && dx <= 6 && (dy === 0 || dy === 6)) ||
+              (dy >= 0 && dy <= 6 && (dx === 0 || dx === 6)) ||
+              (dx >= 2 && dx <= 4 && dy >= 2 && dy <= 4);
+      set(px, py, v ? 1 : 0, true);
+    }
+  }
+  finder(0, 0); finder(size - 7, 0); finder(0, size - 7);
+  for (var i = 8; i < size - 8; i++) { // timing
+    set(i, 6, i % 2 === 0 ? 1 : 0, true);
+    set(6, i, i % 2 === 0 ? 1 : 0, true);
+  }
+  var centers = ALIGN[version];
+  for (var a = 0; a < centers.length; a++) for (var b = 0; b < centers.length; b++) {
+    var ax = centers[a], ay = centers[b];
+    if ((ax === 6 && ay === 6) || (ax === 6 && ay === size - 7) || (ax === size - 7 && ay === 6)) continue;
+    for (var dy2 = -2; dy2 <= 2; dy2++) for (var dx2 = -2; dx2 <= 2; dx2++) {
+      set(ax + dx2, ay + dy2, (Math.max(Math.abs(dx2), Math.abs(dy2)) !== 1) ? 1 : 0, true);
+    }
+  }
+  // 格式信息占位（第 8 行/列）与暗模块
+  for (var j = 0; j < 9; j++) { if (m[8][j] === null) set(j, 8, 0, true); if (m[j][8] === null) set(8, j, 0, true); }
+  for (var k = 0; k < 8; k++) { set(size - 1 - k, 8, 0, true); set(8, size - 1 - k, 0, true); }
+  set(8, size - 8, 0, true);
+  set(8, 4 * version + 9, 1, true); // dark module
+  if (version >= 7) { // 版本信息占位
+    for (var vi = 0; vi < 18; vi++) {
+      var vx = Math.floor(vi / 3), vy = vi % 3;
+      set(vx, size - 11 + vy, 0, true);
+      set(size - 11 + vy, vx, 0, true);
+    }
+  }
+  return { m: m, reserved: r, size: size };
+}
+
+function placeFormat(m, size, mask) {
+  var bits = bchTypeInfo((0 << 3) | mask); // EC M 的等级指示位 = 00
+  function bit(i) { return ((bits >>> i) & 1); }
+  var i;
+  for (i = 0; i <= 5; i++) m[i][8] = bit(i);
+  m[7][8] = bit(6); m[8][8] = bit(7); m[8][7] = bit(8);
+  for (i = 9; i < 15; i++) m[8][14 - i] = bit(i);
+  for (i = 0; i < 8; i++) m[8][size - 1 - i] = bit(i);
+  for (i = 8; i < 15; i++) m[size - 15 + i][8] = bit(i);
+  m[size - 8][8] = 1; // dark module 位置（size-8 = 4V+9）
+}
+function placeVersion(m, size, version) {
+  if (version < 7) return;
+  var bits = bchTypeNumber(version);
+  for (var i = 0; i < 18; i++) {
+    var v = (bits >>> i) & 1;
+    m[Math.floor(i / 3)][size - 11 + (i % 3)] = v;
+    m[size - 11 + (i % 3)][Math.floor(i / 3)] = v;
+  }
+}
+
+var MASKS = [
+  function (x, y) { return (x + y) % 2 === 0; },
+  function (x, y) { return y % 2 === 0; },
+  function (x, y) { return x % 3 === 0; },
+  function (x, y) { return (x + y) % 3 === 0; },
+  function (x, y) { return (Math.floor(x / 3) + Math.floor(y / 2)) % 2 === 0; },
+  function (x, y) { return ((x * y) % 2 + (x * y) % 3) === 0; },
+  function (x, y) { return (((x * y) % 2 + (x * y) % 3) % 2) === 0; },
+  function (x, y) { return (((x * y) % 3 + (x + y) % 2) % 2) === 0; }
+];
+
+function placeData(base, codewords, mask) {
+  var size = base.size;
+  var m = base.m.map(function (row) { return row.slice(); });
+  var bits = [];
+  codewords.forEach(function (cw) { for (var i = 7; i >= 0; i--) bits.push((cw >>> i) & 1); });
+  // 余位（remainder bits）补 0
+  var totalBits = VERSIONS[argumentsVersion(codewords)].total * 8;
+  while (bits.length < totalBits) bits.push(0);
+  var idx = 0, dir = -1, x = size - 1, y = size - 1;
+  while (x > 0) {
+    if (x === 6) x--;
+    for (var count = 0; count < size; count++) {
+      for (var dx = 0; dx < 2; dx++) {
+        var px = x - dx;
+        if (!base.reserved[y][px]) {
+          var v = idx < bits.length ? bits[idx++] : 0;
+          if (MASKS[mask](px, y)) v ^= 1;
+          m[y][px] = v;
+        }
+      }
+      y += dir;
+      if (y < 0 || y >= size) { y = (dir < 0) ? 0 : size - 1; dir = -dir; break; }
+    }
+    x -= 2;
+  }
+  return m;
+}
+// 由总码字数反查版本（placeData 内部用）
+function argumentsVersion(codewords) {
+  for (var v = 1; v <= 10; v++) if (VERSIONS[v].total === codewords.length) return v;
+  return 10;
+}
+
+// ---------- 罚分（择优掩码） ----------
+function penalty(m, size) {
+  var score = 0, x, y, i;
+  // 规则1：行/列连续 5+ 同色
+  function rule1(line) {
+    var s = 0, run = 1;
+    for (var i = 1; i <= line.length; i++) {
+      if (i < line.length && line[i] === line[i - 1]) run++;
+      else { if (run >= 5) s += run - 2; run = 1; }
+    }
+    return s;
+  }
+  for (y = 0; y < size; y++) score += rule1(m[y]);
+  for (x = 0; x < size; x++) { var col = []; for (y = 0; y < size; y++) col.push(m[y][x]); score += rule1(col); }
+  // 规则2：2x2 同色块
+  for (y = 0; y < size - 1; y++) for (x = 0; x < size - 1; x++) {
+    if (m[y][x] === m[y][x + 1] && m[y][x] === m[y + 1][x] && m[y][x] === m[y + 1][x + 1]) score += 3;
+  }
+  // 规则3：1011101 前后带静区
+  function rule3(line) {
+    var s = 0;
+    for (var i = 0; i + 7 <= line.length; i++) {
+      if (line[i] === 1 && line[i + 1] === 0 && line[i + 2] === 1 && line[i + 3] === 1 && line[i + 4] === 1 && line[i + 5] === 0 && line[i + 6] === 1) {
+        var before = i >= 4 && line[i - 1] === 0 && line[i - 2] === 0 && line[i - 3] === 0 && line[i - 4] === 0;
+        var after = i + 11 <= line.length && line[i + 7] === 0 && line[i + 8] === 0 && line[i + 9] === 0 && line[i + 10] === 0;
+        if (before || after) s += 40;
+      }
+    }
+    return s;
+  }
+  for (y = 0; y < size; y++) score += rule3(m[y]);
+  for (x = 0; x < size; x++) { var c2 = []; for (y = 0; y < size; y++) c2.push(m[y][x]); score += rule3(c2); }
+  // 规则4：黑白比例偏差
+  var dark = 0;
+  for (y = 0; y < size; y++) for (x = 0; x < size; x++) if (m[y][x] === 1) dark++;
+  var percent = dark * 100 / (size * size);
+  var k = Math.floor(Math.abs(Math.floor(percent) - 50) / 5);
+  score += k * 10;
+  return score;
+}
+
+// ---------- 主入口 ----------
+function createQR(text) {
+  if (!text) throw new Error('内容为空');
+  var bytes = utf8Bytes(text);
+  var version = 0;
+  for (var v = 1; v <= 10; v++) {
+    var lenBits = v >= 10 ? 16 : 8;
+    if ((4 + lenBits + bytes.length * 8) <= dataCapacity(v) * 8) { version = v; break; }
+  }
+  if (version === 0) throw new Error('内容过长：超过二维码容量（约 213 字节）');
+  var dataCw = buildDataCodewords(bytes, version);
+  var all = interleave(dataCw, version);
+  var base = baseMatrix(version);
+  var best = null, bestScore = Infinity, bestMask = 0;
+  for (var mask = 0; mask < 8; mask++) {
+    var m = placeData(base, all, mask);
+    placeFormat(m, base.size, mask);
+    placeVersion(m, base.size, version);
+    var s = penalty(m, base.size);
+    if (s < bestScore) { bestScore = s; best = m; bestMask = mask; }
+  }
+  return { version: version, size: base.size, mask: bestMask, modules: best };
+}
+
+
+return createQR;
+})();
+</script>
+<script>
+/* ===== 人民币大写逻辑：复用自小程序 expansion-20261117/rmbupper/logic.js ===== */
+var RMBUPPER = (function(){
+// 人民币大写转换 logic.js（纯函数，可单测）
+// 起草：智谱 GLM glm-4.5-air；核对修订：Muse（整数分组算法重写、改字符串解析避浮点误差）
+// 规则口径：大写数字规范——零壹贰叁肆伍陆柒捌玖、拾佰仟、万亿兆、元角分；
+// 整数为 0 时以「零元」打头；角分全无以「整」结尾；角为 0 分不为 0 时元后加「零」。
+var NUM = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'];
+var IN_UNITS = ['', '拾', '佰', '仟']; // 组内位（个拾佰仟）
+var BIG_UNITS = ['', '万', '亿', '兆'];
+
+// 整数串 +1（四舍五入进位用）
+function incIntStr(s) {
+  var out = '', carry = 1;
+  for (var i = s.length - 1; i >= 0; i--) {
+    var d = +s.charAt(i) + carry;
+    if (d === 10) { out = '0' + out; carry = 1; }
+    else { out = d + out; carry = 0; }
+  }
+  return carry ? '1' + out : out;
+}
+
+// 整数部分转大写（intStr 为无前导零的十进制串，"0" 返回 "零"）
+function intToUpper(intStr) {
+  if (intStr === '0') return '零';
+  var len = intStr.length;
+  // 每组（4 位）是否含非零数字，决定该组的大位（万/亿/兆）读不读
+  var groupNonzero = [];
+  for (var p = 0; p < len; p++) {
+    var bp = Math.floor(p / 4);
+    if (intStr.charAt(len - 1 - p) !== '0') groupNonzero[bp] = true;
+  }
+  var out = '', zeroFlag = false;
+  for (var i = 0; i < len; i++) {
+    var pos = len - 1 - i; // 0=个位
+    var d = +intStr.charAt(i);
+    var unitPos = pos % 4, bigPos = Math.floor(pos / 4);
+    if (d === 0) {
+      zeroFlag = true;
+      // 组末一位为 0、但本组有非零数字时，仍要读出大位（万/亿/兆）
+      if (unitPos === 0 && bigPos > 0 && groupNonzero[bigPos]) out += BIG_UNITS[bigPos];
+    } else {
+      if (zeroFlag) { out += '零'; zeroFlag = false; }
+      out += NUM[d] + IN_UNITS[unitPos];
+      if (unitPos === 0 && bigPos > 0) out += BIG_UNITS[bigPos];
+    }
+  }
+  return out;
+}
+
+// input：数字或字符串金额；非法或 >= 10^16 返回 ''
+function toRMBUpper(input) {
+  if (input === null || input === undefined) return '';
+  var s = String(input).trim();
+  var neg = false;
+  if (s.charAt(0) === '-') { neg = true; s = s.slice(1); }
+  else if (s.charAt(0) === '+') { s = s.slice(1); }
+  if (!/^\d+(\.\d+)?$/.test(s)) return '';
+  var parts = s.split('.');
+  var intStr = parts[0].replace(/^0+(?=\d)/, '');
+  var decStr = parts.length > 1 ? parts[1] : '';
+  // 字符串四舍五入到分（不走浮点，避免 0.575 类误差）
+  var cents = (decStr + '00').slice(0, 2);
+  var jiao = +cents.charAt(0), fen = +cents.charAt(1);
+  if (decStr.length > 2 && decStr.charAt(2) >= '5') {
+    fen++;
+    if (fen === 10) { fen = 0; jiao++; }
+    if (jiao === 10) { jiao = 0; intStr = incIntStr(intStr); }
+  }
+  if (intStr.length > 16) return ''; // >= 10^16 超出范围
+  var out = (neg ? '负' : '') + intToUpper(intStr) + '元';
+  if (jiao === 0 && fen === 0) out += '整';
+  else {
+    if (jiao > 0) out += NUM[jiao] + '角';
+    else out += '零';
+    if (fen > 0) out += NUM[fen] + '分';
+  }
+  return out;
+}
+
+
+return { toRMBUpper: toRMBUpper };
+})();
+</script>
+<script>
+/* ===== 日期计算逻辑：复用自小程序 expansion-20261117/datecalc/logic.js ===== */
+var DATECALC = (function(){
+// 日期计算器 logic.js（纯函数，可单测）
+// 起草：Groq openai/gpt-oss-120b；核对修订：Muse（addDays 限定整数天数、diffDays 取整兜底）
+// 全部走 Date.UTC 计算，与本地时区/夏令时无关；'YYYY-MM-DD' 严格校验（含闰年 2 月 29 日）。
+var DATE_REGEX = /^(\d{4})-(\d{2})-(\d{2})$/;
+
+function parseDate(str) {
+  if (typeof str !== 'string') return null;
+  var match = DATE_REGEX.exec(str.trim());
+  if (!match) return null;
+  return { year: +match[1], month: +match[2], day: +match[3] };
+}
+
+function isValidDate(str) {
+  var p = parseDate(str);
+  if (!p) return false;
+  if (p.month < 1 || p.month > 12 || p.day < 1 || p.day > 31) return false;
+  var d = new Date(Date.UTC(p.year, p.month - 1, p.day));
+  // 往返比对：2023-02-29 会被 Date.UTC 滚到 3 月 1 日，比对不上即非法
+  return d.getUTCFullYear() === p.year && d.getUTCMonth() + 1 === p.month && d.getUTCDate() === p.day;
+}
+
+function utcMs(p) { return Date.UTC(p.year, p.month - 1, p.day); }
+
+// toStr - fromStr 的天数（可为负）；非法输入返回 null
+function diffDays(fromStr, toStr) {
+  if (!isValidDate(fromStr) || !isValidDate(toStr)) return null;
+  return Math.round((utcMs(parseDate(toStr)) - utcMs(parseDate(fromStr))) / 86400000);
+}
+
+function pad2(n) { return (n < 10 ? '0' : '') + n; }
+
+// dateStr 加 n 天（n 可为负，必须为整数）；非法输入返回 null
+function addDays(dateStr, n) {
+  if (typeof n !== 'number' || isNaN(n) || !isFinite(n) || Math.floor(n) !== n) return null;
+  if (!isValidDate(dateStr)) return null;
+  var d = new Date(utcMs(parseDate(dateStr)) + n * 86400000);
+  return d.getUTCFullYear() + '-' + pad2(d.getUTCMonth() + 1) + '-' + pad2(d.getUTCDate());
+}
+
+// '星期日'..'星期六'；非法输入返回 null
+function weekdayCN(dateStr) {
+  if (!isValidDate(dateStr)) return null;
+  var names = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+  return names[new Date(utcMs(parseDate(dateStr))).getUTCDay()];
+}
+
+
+return { isValidDate: isValidDate, diffDays: diffDays, addDays: addDays, weekdayCN: weekdayCN };
+})();
+</script>
+<script>
+/* ===== 单位换算逻辑：复用自小程序 expansion-20261117/unitconv/logic.js ===== */
+var UNITCONV = (function(){
+// 单位换算合集 logic.js（纯函数，可单测）
+// 起草：Groq openai/gpt-oss-120b；核对修订：Muse（补齐结尾、类目名改「重量」、「公吨」改「吨」、入参兼容数字串）
+// 长度/面积/重量走系数表（factor = 换算到基准单位的倍数）；温度无固定系数，单走公式。
+var CATEGORIES = [
+  { key: 'length', name: '长度' },
+  { key: 'area', name: '面积' },
+  { key: 'weight', name: '重量' },
+  { key: 'temp', name: '温度' }
+];
+
+var UNITS = {
+  length: [ // 基准：米
+    { key: 'mm', name: '毫米', factor: 0.001 },
+    { key: 'cm', name: '厘米', factor: 0.01 },
+    { key: 'm', name: '米', factor: 1 },
+    { key: 'km', name: '千米', factor: 1000 },
+    { key: 'cun', name: '寸', factor: 0.1 / 3 },
+    { key: 'chi', name: '尺', factor: 1 / 3 },
+    { key: 'zhang', name: '丈', factor: 10 / 3 },
+    { key: 'li', name: '里', factor: 500 },
+    { key: 'inch', name: '英寸', factor: 0.0254 },
+    { key: 'foot', name: '英尺', factor: 0.3048 },
+    { key: 'yard', name: '码', factor: 0.9144 },
+    { key: 'mile', name: '英里', factor: 1609.344 },
+    { key: 'nauticalMile', name: '海里', factor: 1852 }
+  ],
+  area: [ // 基准：平方米
+    { key: 'sqcm', name: '平方厘米', factor: 0.0001 },
+    { key: 'sqm', name: '平方米', factor: 1 },
+    { key: 'hectare', name: '公顷', factor: 10000 },
+    { key: 'sqkm', name: '平方千米', factor: 1e6 },
+    { key: 'mu', name: '亩', factor: 2000 / 3 },
+    { key: 'sqfoot', name: '平方英尺', factor: 0.09290304 },
+    { key: 'acre', name: '英亩', factor: 4046.8564224 }
+  ],
+  weight: [ // 基准：千克
+    { key: 'g', name: '克', factor: 0.001 },
+    { key: 'kg', name: '千克', factor: 1 },
+    { key: 'tonne', name: '吨', factor: 1000 },
+    { key: 'jin', name: '斤', factor: 0.5 },
+    { key: 'liang', name: '两', factor: 0.05 },
+    { key: 'pound', name: '磅', factor: 0.45359237 },
+    { key: 'ounce', name: '盎司', factor: 0.028349523125 }
+  ],
+  temp: [ // 公式换算，factor 置 null
+    { key: 'c', name: '摄氏度', factor: null },
+    { key: 'f', name: '华氏度', factor: null },
+    { key: 'k', name: '开尔文', factor: null }
+  ]
+};
+
+function findUnit(catKey, unitKey) {
+  var list = UNITS[catKey];
+  if (!list) return null;
+  for (var i = 0; i < list.length; i++) if (list[i].key === unitKey) return list[i];
+  return null;
+}
+
+// 换算结果（不做舍入，页面负责格式化）；类别/单位不存在或数值非法返回 null
+function convert(value, catKey, fromKey, toKey) {
+  if (typeof value === 'string') {
+    if (value.trim() === '') return null;
+    value = Number(value);
+  }
+  if (typeof value !== 'number' || isNaN(value) || !isFinite(value)) return null;
+  var fromUnit = findUnit(catKey, fromKey);
+  var toUnit = findUnit(catKey, toKey);
+  if (!fromUnit || !toUnit) return null;
+  if (fromKey === toKey) return value;
+  if (catKey === 'temp') {
+    var celsius;
+    if (fromKey === 'c') celsius = value;
+    else if (fromKey === 'f') celsius = (value - 32) * 5 / 9;
+    else celsius = value - 273.15; // k
+    if (toKey === 'c') return celsius;
+    if (toKey === 'f') return celsius * 9 / 5 + 32;
+    return celsius + 273.15; // k
+  }
+  return value * fromUnit.factor / toUnit.factor;
+}
+
+
+return { CATEGORIES: CATEGORIES, UNITS: UNITS, convert: convert };
+})();
+</script>
+<script>
+/* ===== 随机密码逻辑：复用自小程序 expansion-20261117/pwdgen/logic.js ===== */
+var PWDGEN = (function(){
+// 随机密码生成 logic.js（纯函数，可单测）
+// 起草：Groq openai/gpt-oss-120b；核对修订：Muse（按草稿结构组装完整）
+// 注意：使用 Math.random，非密码学安全随机数，仅供日常账号密码生成，切勿用于高安全场景。
+var ALL_SETS = {
+  lower: 'abcdefghijklmnopqrstuvwxyz',
+  upper: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+  digit: '0123456789',
+  symbol: '!@#$%^&*()-_=+'
+};
+// 去易混字符版（0/O、1/l/I、o 已剔除），默认使用
+var CLEAN_SETS = {
+  lower: 'abcdefghijkmnpqrstuvwxyz',
+  upper: 'ABCDEFGHJKLMNPQRSTUVWXYZ',
+  digit: '23456789',
+  symbol: '!@#$%^&*()-_=+'
+};
+var SETS = CLEAN_SETS;
+
+function randomChar(str) {
+  return str.charAt(Math.floor(Math.random() * str.length));
+}
+
+function shuffle(arr) { // Fisher-Yates
+  var i = arr.length, j, t;
+  while (i) {
+    j = Math.floor(Math.random() * i);
+    i -= 1;
+    t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+  }
+  return arr;
+}
+
+// options: { length=12（钳制 4~64）, useLower/useUpper/useDigit=true, useSymbol=false,
+//            excludeAmbiguous=true（默认去易混字符） }
+// 保证每个勾选的字符集至少出现 1 个；未勾选任何字符集返回 ''
+function generatePassword(options) {
+  options = options || {};
+  var length = parseInt(options.length, 10);
+  if (isNaN(length)) length = 12;
+  length = Math.max(4, Math.min(64, length));
+  var sets = options.excludeAmbiguous === false ? ALL_SETS : CLEAN_SETS;
+  var chosen = [];
+  if (options.useLower !== false) chosen.push(sets.lower);
+  if (options.useUpper !== false) chosen.push(sets.upper);
+  if (options.useDigit !== false) chosen.push(sets.digit);
+  if (options.useSymbol === true) chosen.push(sets.symbol);
+  if (!chosen.length) return '';
+  var pool = chosen.join('');
+  var chars = [];
+  var i;
+  for (i = 0; i < chosen.length; i++) chars.push(randomChar(chosen[i])); // 每类至少 1 个
+  while (chars.length < length) chars.push(randomChar(pool));
+  return shuffle(chars).join('');
+}
+
+
+return { generatePassword: generatePassword };
+})();
+</script>
+<script>
+/* ===== 个税估算逻辑：复用自小程序 expansion-20261117/tax/logic.js（现行年度综合所得税率表） ===== */
+var TAXCALC = (function(){
+// 个人所得税估算 logic.js（纯函数，可单测）
+// 起草：智谱 GLM glm-4.5-air（草稿尾部被截断，Muse 按其结构补齐）；核对修订：Muse
+// 口径：居民个人工资薪金综合所得，现行规则（2019 年新个税法实施至今未变，截至 2026 年）：
+//   减除费用 5000 元/月（60000 元/年）；预扣预缴用累计预扣法；
+//   税率表为年度综合所得税率表（3%~45%，含速算扣除数）。
+// 估算仅供参考，不构成税务建议；实际以单位代扣与年度汇算为准。
+var BASIC_DEDUCTION_YEAR = 60000;
+var BASIC_DEDUCTION_MONTH = 5000;
+
+// 年度综合所得税率表：{ upper 应纳税所得额上限, rate 税率, quickDeduction 速算扣除数 }
+var BRACKETS = [
+  { upper: 36000, rate: 0.03, quickDeduction: 0 },
+  { upper: 144000, rate: 0.10, quickDeduction: 2520 },
+  { upper: 300000, rate: 0.20, quickDeduction: 16920 },
+  { upper: 420000, rate: 0.25, quickDeduction: 31920 },
+  { upper: 660000, rate: 0.30, quickDeduction: 52920 },
+  { upper: 960000, rate: 0.35, quickDeduction: 85920 },
+  { upper: Infinity, rate: 0.45, quickDeduction: 181920 }
+];
+
+function num(v) {
+  var n = Number(v);
+  return isNaN(n) || !isFinite(n) ? 0 : n;
+}
+function round2(v) { return Math.round(v * 100) / 100; }
+
+function bracketOf(taxable) {
+  for (var i = 0; i < BRACKETS.length; i++) {
+    if (taxable <= BRACKETS[i].upper) return BRACKETS[i];
+  }
+  return BRACKETS[BRACKETS.length - 1];
+}
+
+function taxOn(taxable) {
+  if (taxable <= 0) return { tax: 0, rate: 0, quickDeduction: 0 };
+  var b = bracketOf(taxable);
+  var tax = taxable * b.rate - b.quickDeduction;
+  return { tax: round2(Math.max(0, tax)), rate: b.rate, quickDeduction: b.quickDeduction };
+}
+
+// 全年估算：年收入、年社保公积金（个人部分）、年专项附加扣除
+// 返回 { taxable 应纳税所得额, tax 全年税额, rate 边际税率, quickDeduction 速算扣除数 }
+function annualEstimate(annualGross, annualSocial, annualSpecial) {
+  var taxable = num(annualGross) - BASIC_DEDUCTION_YEAR - num(annualSocial) - num(annualSpecial);
+  if (taxable < 0) taxable = 0;
+  var r = taxOn(taxable);
+  return { taxable: round2(taxable), tax: r.tax, rate: r.rate, quickDeduction: r.quickDeduction };
+}
+
+// 累计预扣法：截至第 months 月的累计收入、累计社保、累计专项附加
+// 返回「累计应预扣税额」（页面再减去已预缴月份的税额，得到本月应扣）
+function cumulativeWithholding(cumGross, cumSocial, cumSpecial, months) {
+  var m = Math.max(0, Math.floor(num(months)));
+  var taxable = num(cumGross) - BASIC_DEDUCTION_MONTH * m - num(cumSocial) - num(cumSpecial);
+  if (taxable < 0) taxable = 0;
+  return taxOn(taxable).tax;
+}
+
+
+return { annualEstimate: annualEstimate, cumulativeWithholding: cumulativeWithholding, BRACKETS: BRACKETS };
+})();
+</script>
+<script>
+'use strict';
+/* ================= 工具 1：二维码生成 =================
+   绘制：用 createQR() 返回的模块矩阵画到 canvas（带 4 模块静区）。 */
+function drawQRToCanvas(canvas, text, px){
+  var qr = createQR(text); // 内容过长/为空时抛错，调用处捕获
+  var n = qr.size, border = 4, total = n + border * 2;
+  var cell = Math.floor(px / total), real = cell * total;
+  canvas.width = real; canvas.height = real;
+  var ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, real, real);
+  ctx.fillStyle = '#000000';
+  for(var y = 0; y < n; y++) for(var x = 0; x < n; x++){
+    if(qr.modules[y][x] === 1) ctx.fillRect((x + border) * cell, (y + border) * cell, cell, cell);
+  }
+  return qr;
+}
+var qrHasImage = false;
+$('qrGen').addEventListener('click', function(){
+  var text = $('qrText').value.trim();
+  var msg = $('qrMsg'), cv = $('qrCanvas');
+  if(!text){ msg.innerHTML = '<span class="err">先输入要生成二维码的内容。</span>'; cv.style.display = 'none'; qrHasImage = false; return; }
+  try {
+    drawQRToCanvas(cv, text, 264);
+    cv.style.display = 'block'; qrHasImage = true;
+    msg.innerHTML = '生成好了，长按图片或点「保存图片」就能存下来。';
+  } catch(e){
+    cv.style.display = 'none'; qrHasImage = false;
+    msg.innerHTML = '<span class="err">' + e.message + '</span>';
+  }
+});
+$('qrSave').addEventListener('click', function(){
+  if(!qrHasImage){ toast('先生成二维码'); return; }
+  var a = document.createElement('a');
+  a.download = 'qrcode.png';
+  a.href = $('qrCanvas').toDataURL('image/png');
+  a.click();
+  toast('已保存（手机浏览器请在下载里找）');
+});
+$('qrClear').addEventListener('click', function(){
+  $('qrText').value = ''; $('qrMsg').innerHTML = '';
+  $('qrCanvas').style.display = 'none'; qrHasImage = false;
+});
+
+/* ================= 工具 2：单位换算 ================= */
+var unitState = { lastText: '' };
+function unitFillUnits(){
+  var cat = $('unitCat').value;
+  var list = UNITCONV.UNITS[cat] || [];
+  var from = $('unitFrom'), to = $('unitTo');
+  from.innerHTML = ''; to.innerHTML = '';
+  list.forEach(function(u){
+    var o1 = document.createElement('option'); o1.value = u.key; o1.textContent = u.name; from.appendChild(o1);
+    var o2 = document.createElement('option'); o2.value = u.key; o2.textContent = u.name; to.appendChild(o2);
+  });
+  // 默认目标选第二个单位，避免和源单位相同
+  if(list.length > 1) to.selectedIndex = 1;
+}
+(function initUnit(){
+  var catSel = $('unitCat');
+  UNITCONV.CATEGORIES.forEach(function(c){
+    var o = document.createElement('option'); o.value = c.key; o.textContent = c.name; catSel.appendChild(o);
+  });
+  unitFillUnits();
+  catSel.addEventListener('change', unitFillUnits);
+})();
+function unitName(cat, key){
+  var list = UNITCONV.UNITS[cat] || [];
+  for(var i = 0; i < list.length; i++) if(list[i].key === key) return list[i].name;
+  return key;
+}
+$('unitGo').addEventListener('click', function(){
+  var cat = $('unitCat').value;
+  var raw = $('unitVal').value;
+  var r = UNITCONV.convert(raw, cat, $('unitFrom').value, $('unitTo').value);
+  var out = $('unitOut');
+  if(r === null){ out.innerHTML = '<span class="err">先输入一个数字。</span>'; unitState.lastText = ''; return; }
+  var text = raw + ' ' + unitName(cat, $('unitFrom').value) + ' = ' + fmtNum(r) + ' ' + unitName(cat, $('unitTo').value);
+  out.innerHTML = '<span class="big">' + fmtNum(r) + '</span> ' + unitName(cat, $('unitTo').value) +
+    '<span class="note">' + text + '</span>';
+  unitState.lastText = text;
+});
+$('unitCopy').addEventListener('click', function(){ copyText(unitState.lastText); });
+$('unitClear').addEventListener('click', function(){
+  $('unitVal').value = ''; $('unitOut').innerHTML = ''; unitState.lastText = '';
+});
+
+/* ================= 工具 3：日期计算 ================= */
+var dateState = { diffText: '', addText: '' };
+$('dateDiffGo').addEventListener('click', function(){
+  var a = $('dateA').value, b = $('dateB').value;
+  var out = $('dateDiffOut');
+  var d = DATECALC.diffDays(a, b);
+  if(d === null){ out.innerHTML = '<span class="err">两个日期都要选对。</span>'; dateState.diffText = ''; return; }
+  var text = a + '（' + DATECALC.weekdayCN(a) + '）到 ' + b + '（' + DATECALC.weekdayCN(b) + '）相差 ' + Math.abs(d) + ' 天';
+  out.innerHTML = '<span class="big">' + Math.abs(d) + ' 天</span><span class="note">' + text + '</span>';
+  dateState.diffText = text;
+});
+$('dateDiffCopy').addEventListener('click', function(){ copyText(dateState.diffText); });
+$('dateAddGo').addEventListener('click', function(){
+  var a = $('dateA').value;
+  var n = parseInt($('dateAddN').value, 10);
+  var out = $('dateAddOut');
+  if(!DATECALC.isValidDate(a)){ out.innerHTML = '<span class="err">先在上面选好开始日期。</span>'; dateState.addText = ''; return; }
+  if(isNaN(n)){ out.innerHTML = '<span class="err">天数要填一个整数。</span>'; dateState.addText = ''; return; }
+  var r = DATECALC.addDays(a, n);
+  var text = a + (n >= 0 ? ' 往后 ' : ' 往前 ') + Math.abs(n) + ' 天是 ' + r + '（' + DATECALC.weekdayCN(r) + '）';
+  out.innerHTML = '<span class="big">' + r + '</span> ' + DATECALC.weekdayCN(r) + '<span class="note">' + text + '</span>';
+  dateState.addText = text;
+});
+$('dateAddCopy').addEventListener('click', function(){ copyText(dateState.addText); });
+$('dateClear').addEventListener('click', function(){
+  $('dateA').value = ''; $('dateB').value = ''; $('dateAddN').value = '';
+  $('dateDiffOut').innerHTML = ''; $('dateAddOut').innerHTML = '';
+  dateState.diffText = ''; dateState.addText = '';
+});
+
+/* ================= 工具 4：随机密码 ================= */
+var pwdState = { last: '' };
+$('pwdLen').addEventListener('input', function(){ $('pwdLenVal').textContent = this.value; });
+$('pwdGen').addEventListener('click', function(){
+  var p = PWDGEN.generatePassword({
+    length: parseInt($('pwdLen').value, 10),
+    useLower: $('pwdLower').checked,
+    useUpper: $('pwdUpper').checked,
+    useDigit: $('pwdDigit').checked,
+    useSymbol: $('pwdSymbol').checked,
+    excludeAmbiguous: $('pwdClean').checked
+  });
+  var out = $('pwdOut');
+  if(!p){ out.innerHTML = '<span class="err">至少勾选一种字符。</span>'; pwdState.last = ''; return; }
+  out.textContent = p;
+  pwdState.last = p;
+});
+$('pwdCopy').addEventListener('click', function(){ copyText(pwdState.last); });
+$('pwdClear').addEventListener('click', function(){ $('pwdOut').innerHTML = ''; pwdState.last = ''; });
+
+/* ================= 工具 5：人民币大写 ================= */
+var rmbState = { last: '' };
+$('rmbGo').addEventListener('click', function(){
+  var v = $('rmbVal').value.trim();
+  var r = RMBUPPER.toRMBUpper(v);
+  var out = $('rmbOut');
+  if(!r){ out.innerHTML = '<span class="err">金额格式不对，填数字就行，例如 1001.05。</span>'; rmbState.last = ''; return; }
+  out.innerHTML = '<span class="big">' + r + '</span>';
+  rmbState.last = r;
+});
+$('rmbCopy').addEventListener('click', function(){ copyText(rmbState.last); });
+$('rmbClear').addEventListener('click', function(){
+  $('rmbVal').value = ''; $('rmbOut').innerHTML = ''; rmbState.last = '';
+});
+
+/* ================= 工具 6：个税估算 ================= */
+var taxState = { last: '' };
+$('taxGo').addEventListener('click', function(){
+  var gross = parseFloat($('taxGross').value);
+  var social = parseFloat($('taxSocial').value) || 0;
+  var special = parseFloat($('taxSpecial').value) || 0;
+  var out = $('taxOut');
+  if(isNaN(gross) || gross < 0){ out.innerHTML = '<span class="err">先填全年税前收入。</span>'; taxState.last = ''; return; }
+  var r = TAXCALC.annualEstimate(gross, social, special);
+  var after = Math.round((gross - r.tax) * 100) / 100;
+  var lines = '全年个税约 ' + money(r.tax) + '\n应纳税所得额 ' + money(r.taxable) +
+    '（适用税率 ' + Math.round(r.rate * 100) + '%，速算扣除数 ' + money(r.quickDeduction) + '）\n税后收入约 ' + money(after);
+  out.innerHTML = '<span class="big">全年个税约 ' + money(r.tax) + '</span>' +
+    '<span class="note">应纳税所得额 ' + money(r.taxable) + ' · 税率 ' + Math.round(r.rate * 100) + '% · 速算扣除数 ' + money(r.quickDeduction) + '<br>税后收入约 ' + money(after) + '</span>';
+  taxState.last = lines;
+});
+$('taxCopy').addEventListener('click', function(){ copyText(taxState.last); });
+$('taxClear').addEventListener('click', function(){
+  $('taxGross').value = ''; $('taxSocial').value = ''; $('taxSpecial').value = '';
+  $('taxOut').innerHTML = ''; taxState.last = '';
+});
+
+/* ================= 变现区：套用 CONFIG 外链 ================= */
+(function applyLinks(){
+  var links = document.querySelectorAll('[data-link]');
+  for(var i = 0; i < links.length; i++){
+    var key = links[i].getAttribute('data-link');
+    if(CONFIG[key]) links[i].href = CONFIG[key];
+  }
+})();
+</script>
+</body>
+</html>
